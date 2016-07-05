@@ -20309,19 +20309,13 @@ module.exports = require('./lib/React');
 var React = require('react');
 var ListItem = require('./ListItem.jsx');
 
-var ingredient = [{ "id": 1, "text": "ham" }, { "id": 2, "text": "cheese" }, { "id": 3,
-  "text": "cheese2",
-  "hahaha": 123
-}];
+var ingredient = [{ "id": 1, "text": "ham" }, { "id": 2, "text": "cheese" }, { "id": 3, "text": "cheese2" }];
 
 var List = React.createClass({
   displayName: 'List',
 
   render: function () {
-    var listItems = ingredient.map(function (item) {
-      return React.createElement(ListItem, { key: item.id, ingredient: item.text });
-    });
-
+    var listItems = makeListComponents();
     return React.createElement(
       'ul',
       null,
@@ -20330,6 +20324,14 @@ var List = React.createClass({
   }
 });
 module.exports = List;
+
+function makeListComponents() {
+  return ingredient.map(transferToComponent);
+}
+
+function transferToComponent(item) {
+  return React.createElement(ListItem, { key: item.id, ingredient: item.text });
+}
 
 },{"./ListItem.jsx":171,"react":169}],171:[function(require,module,exports){
 var React = require('react');
