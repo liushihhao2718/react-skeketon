@@ -1,0 +1,27 @@
+{
+  "name": "react-skeleton",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start":"watchify src/main.jsx -v -t [babelify --presets [react] ] -o public/js/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/st930112/react-skeketon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/st930112/react-skeketon/issues"
+  },
+  "homepage": "https://github.com/st930112/react-skeketon#readme",
+  "dependencies": {
+    "babel-preset-react": "6.1.18",
+    "babelify": "^7.3.0",
+    "watchify": "3.7.0",
+    "react": "*",
+    "react-dom": "*"
+  }
+}
