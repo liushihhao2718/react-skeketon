@@ -20321,8 +20321,8 @@ var List = React.createClass({
         };
 
         return React.createElement(
-            'ul',
-            null,
+            'ol',
+            { className: 'list' },
             this.props.items.map(createItem)
         );
     }
@@ -20361,25 +20361,47 @@ var ListManager = React.createClass({
         return { items: [], newItemText: "" };
     },
     render: function () {
+        var divStyle = {
+            marginTop: 10
+        };
+
         return React.createElement(
             'div',
-            null,
+            { style: divStyle, className: 'col-sm-4' },
             React.createElement(
-                'h3',
-                null,
-                this.props.title
-            ),
-            React.createElement(
-                'form',
-                { onSubmit: this.handleSubmit },
-                React.createElement('input', { onChange: this.onChange, value: this.state.newItemText }),
+                'div',
+                { className: 'panel panel-primary' },
                 React.createElement(
-                    'button',
-                    null,
-                    'Add'
+                    'div',
+                    { className: 'panel-heading' },
+                    React.createElement(
+                        'h3',
+                        null,
+                        this.props.title
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'panel-body' },
+                    React.createElement(
+                        'form',
+                        { className: 'row', onSubmit: this.handleSubmit },
+                        React.createElement(
+                            'div',
+                            { className: 'col-sm-9' },
+                            React.createElement('input', { className: 'form-control',
+                                onChange: this.onChange,
+                                value: this.state.newItemText })
+                        ),
+                        React.createElement(
+                            'button',
+                            { className: 'col-sm-2 col-offset-1 btn btn-primary' },
+                            'Add'
+                        )
+                    ),
+                    React.createElement(List, { className: 'row', items: this.state.items })
                 )
-            ),
-            React.createElement(List, { items: this.state.items })
+            )
         );
     },
     handleSubmit: function (event) {
@@ -20392,7 +20414,6 @@ var ListManager = React.createClass({
     onChange: function (event) {
         this.setState({ newItemText: event.target.value });
     }
-
 });
 module.exports = ListManager;
 
