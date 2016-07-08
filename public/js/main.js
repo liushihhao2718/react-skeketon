@@ -20307,121 +20307,282 @@ module.exports = require('./lib/React');
 
 },{"./lib/React":55}],170:[function(require,module,exports){
 var React = require('react');
-var ListItem = require('./ListItem.jsx');
-/*
-@param items
-an array with food text
-*/
-var List = React.createClass({
-    displayName: 'List',
+var ContentPanel = React.createClass({
+    displayName: 'ContentPanel',
 
     render: function () {
-        var createItem = function (text, index) {
-            return React.createElement(ListItem, { key: index + text, text: text });
+
+        var panelStyle = {
+            color: 'white',
+            background: 'dimgray',
+            border: 'dimgray',
+            textAlign: 'center'
         };
 
+        var headingStyle = {
+            background: 'white',
+            height: 200
+        };
+        if (this.props.headingColor) {
+            headingStyle.background = this.props.headingColor;
+            headingStyle.border = this.props.headingColor;
+        }
         return React.createElement(
-            'ol',
-            { className: 'list' },
-            this.props.items.map(createItem)
+            'div',
+            { className: 'panel panel-default' },
+            React.createElement('div', { className: 'panel-heading', style: headingStyle }),
+            React.createElement(
+                'div',
+                { className: 'panel-footer', style: panelStyle },
+                React.createElement(
+                    'div',
+                    { className: 'row' },
+                    React.createElement(
+                        'div',
+                        { className: 'col-sm-4' },
+                        React.createElement(
+                            'h3',
+                            null,
+                            this.props.shotView
+                        ),
+                        React.createElement(
+                            'p',
+                            null,
+                            'Shot Views'
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'col-sm-4' },
+                        React.createElement(
+                            'h3',
+                            null,
+                            this.props.like
+                        ),
+                        React.createElement(
+                            'p',
+                            null,
+                            'Likes'
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'col-sm-4' },
+                        React.createElement(
+                            'h3',
+                            null,
+                            this.props.comments
+                        ),
+                        React.createElement(
+                            'p',
+                            null,
+                            'Comments'
+                        )
+                    )
+                )
+            )
         );
     }
 });
-module.exports = List;
 
-},{"./ListItem.jsx":171,"react":169}],171:[function(require,module,exports){
+module.exports = ContentPanel;
+
+},{"react":169}],171:[function(require,module,exports){
 var React = require('react');
-var ListItem = React.createClass({
-  displayName: 'ListItem',
+var HeadingPanel = React.createClass({
+    displayName: "HeadingPanel",
 
-  render: function () {
-    return React.createElement(
-      'li',
-      null,
-      React.createElement(
-        'h4',
-        null,
-        this.props.text
-      )
-    );
-  }
+    render: function () {
+        var backgroundStyle = { color: "white", background: "blue" };
+        if (this.props.headingColor) {
+            backgroundStyle.background = this.props.headingColor;
+        }
+
+        return React.createElement(
+            "div",
+            { className: "panel panel-default" },
+            React.createElement(
+                "div",
+                { className: "panel-heading", style: backgroundStyle },
+                React.createElement(
+                    "h6",
+                    null,
+                    this.props.title
+                ),
+                React.createElement(
+                    "h3",
+                    null,
+                    this.props.message
+                )
+            ),
+            React.createElement("h3", { className: "panel-body" })
+        );
+    }
 });
-
-module.exports = ListItem;
+module.exports = HeadingPanel;
 
 },{"react":169}],172:[function(require,module,exports){
-var React = require('react');
-var List = require('./List.jsx');
-var ListItem = require('./ListItem.jsx');
+var React = require('react'),
+    HeadingPanel = require('./HeadingPanel.jsx'),
+    WetherPanel = require('./WetherPanel.jsx');
+var HeadingPanelManager = React.createClass({
+    displayName: 'HeadingPanelManager',
 
-var ListManager = React.createClass({
-    displayName: 'ListManager',
-
-    getInitialState: function () {
-        return { items: [], newItemText: "" };
-    },
     render: function () {
-        var divStyle = {
-            marginTop: 10
+        return React.createElement(
+            'div',
+            { className: 'row' },
+            React.createElement(WetherPanel, { temperature: '18', city: 'Paris' }),
+            React.createElement(HeadingPanel, { title: 'New visitor', message: '1.5K', headingColor: 'blue' }),
+            React.createElement(HeadingPanel, { title: 'New visitor', message: '1.5K', headingColor: 'purple' }),
+            React.createElement(HeadingPanel, { title: 'New visitor', message: '1.5K', headingColor: 'red' }),
+            React.createElement(HeadingPanel, { title: 'New visitor', message: '1.5K', headingColor: 'green' })
+        );
+    }
+});
+module.exports = HeadingPanelManager;
+
+},{"./HeadingPanel.jsx":171,"./WetherPanel.jsx":173,"react":169}],173:[function(require,module,exports){
+var React = require('react');
+var WatherPanel = React.createClass({
+    displayName: 'WatherPanel',
+
+    render: function () {
+
+        var panelStyle = {
+            color: 'white',
+            background: 'orange',
+            textAlign: 'center'
         };
 
         return React.createElement(
             'div',
-            { style: divStyle, className: 'col-sm-4' },
+            { className: 'panel panel-default', style: { border: panelStyle.background } },
             React.createElement(
                 'div',
-                { className: 'panel panel-primary' },
+                { className: 'panel-body', style: panelStyle },
                 React.createElement(
-                    'div',
-                    { className: 'panel-heading' },
-                    React.createElement(
-                        'h3',
-                        null,
-                        this.props.title
-                    )
+                    'h3',
+                    null,
+                    this.props.temperature + '°'
                 ),
                 React.createElement(
-                    'div',
-                    { className: 'panel-body' },
-                    React.createElement(
-                        'form',
-                        { className: 'row', onSubmit: this.handleSubmit },
-                        React.createElement(
-                            'div',
-                            { className: 'col-sm-9' },
-                            React.createElement('input', { className: 'form-control',
-                                onChange: this.onChange,
-                                value: this.state.newItemText })
-                        ),
-                        React.createElement(
-                            'button',
-                            { className: 'col-sm-2 col-offset-1 btn btn-primary' },
-                            'Add'
-                        )
-                    ),
-                    React.createElement(List, { className: 'row', items: this.state.items })
+                    'p',
+                    null,
+                    this.props.city
                 )
             )
         );
-    },
-    handleSubmit: function (event) {
-        event.preventDefault();
-
-        var currentItem = this.state.items;
-        currentItem.push(this.state.newItemText);
-        this.setState({ items: currentItem, newItemText: '' });
-    },
-    onChange: function (event) {
-        this.setState({ newItemText: event.target.value });
     }
 });
-module.exports = ListManager;
 
-},{"./List.jsx":170,"./ListItem.jsx":171,"react":169}],173:[function(require,module,exports){
+module.exports = WatherPanel;
+
+},{"react":169}],174:[function(require,module,exports){
 var React = require('react');
-var ReactDOM = require('react-dom');
-var ListManager = require('./components/ListManager.jsx');
+var Panel = React.createClass({
+    displayName: "Panel",
 
-ReactDOM.render(React.createElement(ListManager, { title: 'ingredient' }), document.getElementById('content'));
+    render: function () {
 
-},{"./components/ListManager.jsx":172,"react":169,"react-dom":29}]},{},[173]);
+        var panelStyle = {
+            titleStyle: { color: "black" },
+            messageStyle: { color: "lightgray" }
+        };
+
+        return React.createElement(
+            "div",
+            { className: "panel panel-default" },
+            React.createElement(
+                "div",
+                { className: "panel-body" },
+                React.createElement(
+                    "h3",
+                    { style: panelStyle.titleStyle },
+                    this.props.Count
+                ),
+                React.createElement(
+                    "p",
+                    { style: panelStyle.messageStyle },
+                    this.props.Message
+                )
+            )
+        );
+    }
+});
+
+module.exports = Panel;
+
+},{"react":169}],175:[function(require,module,exports){
+var React = require('react');
+var Panel = require('./Panel.jsx');
+
+var PanelManager = React.createClass({
+    displayName: 'PanelManager',
+
+    render: function () {
+
+        return React.createElement(
+            'div',
+            { className: 'row' },
+            React.createElement(
+                'div',
+                { className: 'col-sm-4' },
+                React.createElement(Panel, { Count: '50', Message: 'Follower add this month.' })
+            ),
+            React.createElement(
+                'div',
+                { className: 'col-sm-4' },
+                React.createElement(Panel, { Count: '$ 1250', Message: 'Follower add this month.' })
+            ),
+            React.createElement(
+                'div',
+                { className: 'col-sm-4' },
+                React.createElement(Panel, { Count: '$ 13865', Message: 'Follower add this month.' })
+            )
+        );
+    }
+});
+
+module.exports = PanelManager;
+
+},{"./Panel.jsx":174,"react":169}],176:[function(require,module,exports){
+var React = require('react'),
+    ReactDOM = require('react-dom'),
+    PanelManager = require('./components/Panel/PanelManager.jsx'),
+    HeadingPanelManager = require('./components/HeadingPanel/HeadingPanelManager.jsx'),
+    ContentPanel = require('./components/ContentPanel/ContentPanel.jsx');
+
+var contentStyle = {
+    padding: 10
+};
+ReactDOM.render(React.createElement(
+    'div',
+    { className: 'col-sm-10 col-sm-offset-1', style: { "backgroundColor": "lightgray" } },
+    React.createElement(
+        'div',
+        { className: 'row', style: contentStyle },
+        React.createElement(
+            'div',
+            { className: 'col-sm-9' },
+            React.createElement(PanelManager, null),
+            React.createElement(
+                'div',
+                { className: 'row' },
+                React.createElement(
+                    'div',
+                    { className: 'col-sm-12' },
+                    React.createElement(ContentPanel, { shotView: '15000', like: '12000', comments: '5100', headingColor: 'pink' }),
+                    React.createElement(ContentPanel, { shotView: '15000', like: '12000', comments: '5100', headingColor: 'blue' })
+                )
+            )
+        ),
+        React.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            React.createElement(HeadingPanelManager, null)
+        )
+    )
+), document.getElementById('content'));
+
+},{"./components/ContentPanel/ContentPanel.jsx":170,"./components/HeadingPanel/HeadingPanelManager.jsx":172,"./components/Panel/PanelManager.jsx":175,"react":169,"react-dom":29}]},{},[176]);
